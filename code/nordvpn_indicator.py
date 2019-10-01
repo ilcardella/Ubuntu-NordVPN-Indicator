@@ -236,6 +236,16 @@ class SettingsWindow(gtk.Window):
 
         m_vbox = gtk.VBox()
 
+        row_technology = gtk.Box(gtk.Orientation.HORIZONTAL, 4)
+        row_technology.add(gtk.Label(Settings.TECHNOLOGY.value))
+        combo_technology = gtk.ComboBoxText()
+        combo_technology.set_property('name', Settings.TECHNOLOGY.value)
+        combo_technology.append('openvpn', 'OpenVPN') # id and string
+        combo_technology.append('nordlynx', 'NordLynx')
+        combo_technology.set_active_id('nordlynx' if settings[Settings.TECHNOLOGY] else 'openvpn')
+        combo_technology.connect('changed', self.on_setting_update)
+        row_technology.add(combo_technology)
+
         row_protocol = gtk.Box(gtk.Orientation.HORIZONTAL, 4)
         row_protocol.add(gtk.Label(Settings.PROTOCOL.value))
         combo_protocol = gtk.ComboBoxText()
@@ -326,6 +336,7 @@ class SettingsWindow(gtk.Window):
         row_buttons.add(button_close)
         row_buttons.add(button_apply)
 
+        m_vbox.pack_start(row_technology, True, False, 0)
         m_vbox.pack_start(row_protocol, True, False, 0)
         m_vbox.pack_start(row_kill_switch, True, False, 0)
         m_vbox.pack_start(row_cybersec, True, False, 0)
@@ -368,6 +379,8 @@ class SettingsWindow(gtk.Window):
             self.settings[Settings.AUTO_CONNECT] = widget.get_active_text().replace(' ','_')
         elif widget.get_name() == Settings.NOTIFY.value:
             self.settings[Settings.NOTIFY] = (widget.get_active_text().lower() == 'on')
+        elif widget.get_name() == Settings.TECHNOLOGY.value:
+            self.settings[Settings.TECHNOLOGY] = widget.get_active_text()
 
 def main():
     """

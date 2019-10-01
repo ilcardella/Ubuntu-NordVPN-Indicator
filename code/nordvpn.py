@@ -29,6 +29,7 @@ class Settings(Enum):
     AUTO_CONNECT = "Auto-connect"
     DNS = "DNS"
     NOTIFY = "Notify"
+    TECHNOLOGY = "Technology"
 
 
 class NordVPNStatus():
@@ -331,6 +332,9 @@ class NordVPN(object):
             # PROTOCOL has special values
             if key == Settings.PROTOCOL.value:
                 value = 'enabled' if value == 'TCP' else 'disabled'
+            # TECHNOLOGY has special values
+            if key == Settings.TECHNOLOGY.value:
+                value = 'enabled' if value == 'NordLynx' else 'disabled'
             # Create Settings instance
             settings[Settings(
                 key)] = True if value == 'enabled' else False
